@@ -43,6 +43,10 @@ class Game {
     setConstraintWithBelow(coords: Coordinates, constraint: Constraint) {
         this.colConstraints[coords.toIndex(this.size)] = constraint;
     }
+
+    public toString = () : string => {
+        return `Game of size ${this.size}`;
+    }
 }
 
 export type {Constraint};
