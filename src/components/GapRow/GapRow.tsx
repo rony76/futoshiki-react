@@ -13,9 +13,9 @@ const printConstraint = (c: Constraint) => {
         case "none":
             return '';
         case "lt":
-            return '⋀';
+            return '<';
         case "gt":
-            return '⋁';
+            return '>';
     }
 }
 

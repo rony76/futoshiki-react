@@ -1,1 +1,7 @@
-.GapRow {}
+.GapRow {
+
+}
+
+.grid-v-gap {
+    transform: rotate(90deg);
+}
