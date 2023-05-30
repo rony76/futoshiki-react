@@ -44,15 +44,33 @@ describe('a valid game of size 5', () => {
         }).toThrow();
     })
 
-    it('can be set fixed values', () => {
+    const cellCoords = [
+        [1, 1],
+        [5, 5],
+        [2, 4],
+        [4, 2],
+    ];
+    it.each(cellCoords)('has cell <%d, %d> defaulting to empty', (r, c) => {
+        const coords = new Coordinates(r, c);
+
+        const cellBefore = game.getCell(coords);
+        expect(cellBefore.value).not.toBeTruthy();
+        expect(cellBefore.type).toEqual('empty');
+    })
+
+    it('can assign fixed values', () => {
         const coords = new Coordinates(4, 2);
 
-        expect(game.getCell(coords).value).not.toBeTruthy();
+        const cellBefore = game.getCell(coords);
+        expect(cellBefore.value).not.toBeTruthy();
+        expect(cellBefore.type).toEqual('empty');
 
         const fixedValue = 2;
         game.setFixed(coords, fixedValue);
 
-        expect(game.getCell(coords).value).toEqual(fixedValue);
+        const cellAfter = game.getCell(coords);
+        expect(cellAfter.value).toEqual(fixedValue);
+        expect(cellAfter.type).toEqual('fixed');
     })
 
 })
