@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Grid from "./components/Grid/Grid";
+import GameBoard from "./components/GameBoard/GameBoard";
 import Instructions from "./components/Instructions/Instructions";
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
                 <h2>FUTOSHIKI</h2>
             </header>
             <main>
-                <Grid size={size}/>
+                <GameBoard size={size}/>
                 <Instructions size={size}/>
             </main>
         </div>

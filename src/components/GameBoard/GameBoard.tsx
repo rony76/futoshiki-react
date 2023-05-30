@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
-import './Grid.css';
+import './GameBoard.css';
 import ValueRow from "../ValueRow/ValueRow";
 import GapRow from "../GapRow/GapRow";
 
-interface GridProps {
+interface GameBoardProps {
     size: number,
 }
-const Grid: FC<GridProps> = ({size} : { size: number }) => {
+const GameBoard: FC<GameBoardProps> = ({size} : { size: number }) => {
     let cells = Array<JSX.Element>();
 
     for (let row = 0; row < size; row++) {
@@ -17,10 +17,10 @@ const Grid: FC<GridProps> = ({size} : { size: number }) => {
     }
 
     return (
-        <div className="Grid">
+        <div className="GameBoard">
             {cells}
         </div>
     );
 };
 
-export default Grid;
+export default GameBoard;
