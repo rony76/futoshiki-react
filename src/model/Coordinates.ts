@@ -23,3 +23,6 @@ class Coordinates {
 }
 
 export {Coordinates}
+export function at(row: number, col: number): Coordinates {
+    return new Coordinates(row, col);
+}

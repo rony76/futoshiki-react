@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import './ValueRow.css';
 import {Constraint, Game} from "../../model/Game";
 import ValueCell from "../ValueCell/ValueCell";
-import {Coordinates} from "../../model/Coordinates";
+import {at} from "../../model/Coordinates";
 
 interface ValueRowProps {
     game: Game,
@@ -21,7 +21,7 @@ const ValueRow: FC<ValueRowProps> = ({game, row}: ValueRowProps) => {
     let result = Array<JSX.Element>();
 
     for (let col = 1; col <= game.size; col++) {
-        const coords = new Coordinates(row, col);
+        const coords = at(row, col);
         const cell = game.getCell(coords);
         result.push(<ValueCell cell={cell} />)
 

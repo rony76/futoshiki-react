@@ -1,5 +1,5 @@
 import {Constraint, Game} from "./Game";
-import {Coordinates} from "./Coordinates";
+import {at, Coordinates} from "./Coordinates";
 
 
 it('cannot be created with non positive size', () => {
@@ -23,19 +23,19 @@ describe('a valid game of size 5', () => {
     it('allows to retrieve all cells, 1 based', () => {
         for (let row = 1; row <= size; row++) {
             for (let column = 1; column <= size; column++) {
-                let cell = game.getCell(new Coordinates(row, column));
+                let cell = game.getCell(at(row, column));
                 expect(cell).not.toBeNull();
             }
         }
     })
 
     const badCoords: [string, Coordinates][] = [
-        ['above', new Coordinates(0, 2)],
-        ['above', new Coordinates(-3, 2)],
-        ['below', new Coordinates(6, 2)],
-        ['left', new Coordinates(2, -3)],
-        ['left', new Coordinates(2, 0)],
-        ['right', new Coordinates(2, 6)]
+        ['above', at(0, 2)],
+        ['above', at(-3, 2)],
+        ['below', at(6, 2)],
+        ['left', at(2, -3)],
+        ['left', at(2, 0)],
+        ['right', at(2, 6)]
     ];
     it.each(badCoords)('complains for bad cell coordinates when too %s', (where: string, coords: Coordinates) => {
         expect(() => {
@@ -50,7 +50,7 @@ describe('a valid game of size 5', () => {
         [4, 2],
     ];
     it.each(cellCoords)('has cell <%d, %d> defaulting to empty', (r, c) => {
-        const coords = new Coordinates(r, c);
+        const coords = at(r, c);
 
         const cellBefore = game.getCell(coords);
         expect(cellBefore.value).not.toBeTruthy();
@@ -58,7 +58,7 @@ describe('a valid game of size 5', () => {
     })
 
     it('can assign fixed values', () => {
-        const coords = new Coordinates(4, 2);
+        const coords = at(4, 2);
 
         const cellBefore = game.getCell(coords);
         expect(cellBefore.value).not.toBeTruthy();
@@ -77,21 +77,21 @@ describe('a valid game of size 5', () => {
         const row = 2;
         const leftCellColumn = 3;
 
-        expect(game.getConstraintWithRight(new Coordinates(row, leftCellColumn))).toEqual('none');
+        expect(game.getConstraintWithRight(at(row, leftCellColumn))).toEqual('none');
 
-        game.setConstraintWithRight(new Coordinates(row, leftCellColumn), constraint);
+        game.setConstraintWithRight(at(row, leftCellColumn), constraint);
 
-        expect(game.getConstraintWithRight(new Coordinates(row, leftCellColumn))).toEqual(constraint);
+        expect(game.getConstraintWithRight(at(row, leftCellColumn))).toEqual(constraint);
     })
 
     it.each(constraints)('allows setting "%s" column constraint', (constraint: Constraint) => {
         const column = 4;
         const aboveCellRow = 3;
 
-        expect(game.getConstraintWithBelow(new Coordinates(aboveCellRow, column))).toEqual('none');
+        expect(game.getConstraintWithBelow(at(aboveCellRow, column))).toEqual('none');
 
-        game.setConstraintWithBelow(new Coordinates(aboveCellRow, column), constraint);
+        game.setConstraintWithBelow(at(aboveCellRow, column), constraint);
 
-        expect(game.getConstraintWithBelow(new Coordinates(aboveCellRow, column))).toEqual(constraint);
+        expect(game.getConstraintWithBelow(at(aboveCellRow, column))).toEqual(constraint);
     })
 })
