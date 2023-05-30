@@ -1,5 +1,4 @@
-import {Game} from "./Game";
-import {Cell} from "./Cell";
+import {Constraint, Game} from "./Game";
 import {Coordinates} from "./Coordinates";
 
 
@@ -73,4 +72,26 @@ describe('a valid game of size 5', () => {
         expect(cellAfter.type).toEqual('fixed');
     })
 
+    const constraints: Constraint[][] = [['lt'], ['gt']];
+    it.each(constraints)('allows setting "%s" row constraint', (constraint: Constraint) => {
+        const row = 2;
+        const leftCellColumn = 3;
+
+        expect(game.getRowConstraint(row, leftCellColumn)).toEqual('none');
+
+        game.setRowConstraint(row, leftCellColumn, constraint);
+
+        expect(game.getRowConstraint(row, leftCellColumn)).toEqual(constraint);
+    })
+
+    it.each(constraints)('allows setting "%s" column constraint', (constraint: Constraint) => {
+        const column = 4;
+        const aboveCellRow = 3;
+
+        expect(game.getColumnConstraint(column, aboveCellRow)).toEqual('none');
+
+        game.setColumnConstraint(column, aboveCellRow, constraint);
+
+        expect(game.getColumnConstraint(column, aboveCellRow)).toEqual(constraint);
+    })
 })
