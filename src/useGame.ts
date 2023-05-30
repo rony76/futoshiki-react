@@ -1,14 +1,20 @@
 import {Game} from "./model/Game";
+import {useState} from "react";
 
-export function useGame(size: number): Game {
-    const game = new Game(size);
+export function useGame(size: number): Game | null {
+    const [game, setGame] = useState<Game | null>(null);
 
-    for (let row = 1; row <= size; row++) {
-        for (let col = 1; col <= size; col++) {
-            let val = (size + col - (row - 1)) % size;
-            if (val === 0) val = 5;
-            game.setFixed([row, col], val);
+    setTimeout(() => {
+        let newGame = new Game(size);
+        for (let row = 1; row <= size; row++) {
+            for (let col = 1; col <= size; col++) {
+                let val = (size + col - (row - 1)) % size;
+                if (val === 0) val = 5;
+                newGame.setFixed([row, col], val);
+            }
         }
-    }
+        setGame(newGame);
+    }, 800);
+
     return game;
 }
