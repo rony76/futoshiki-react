@@ -1,16 +1,32 @@
 import React, {FC} from 'react';
 import './GapRow.css';
+import {Constraint, Game} from "../../model/Game";
+import {Coordinates} from "../../model/Coordinates";
 
 interface GapRowProps {
-    size: number
+    game: Game,
+    afterRow: number
 }
 
-const GapRow: FC<GapRowProps> = ({size}: GapRowProps) => {
+const printConstraint = (c: Constraint) => {
+    switch (c) {
+        case "none":
+            return '';
+        case "lt":
+            return '⋀';
+        case "gt":
+            return '⋁';
+    }
+}
+
+const GapRow: FC<GapRowProps> = ({game, afterRow}: GapRowProps) => {
     let result = Array<JSX.Element>();
 
-    for (let col = 0; col < size; col++) {
-        result.push(<div className="grid-h-gap"/>)
-        if (col < size - 1) {
+    for (let col = 1; col <= game.size; col++) {
+        const coords = new Coordinates(afterRow, col);
+        let constraint = game.getConstraintWithBelow(coords);
+        result.push(<div className="grid-v-gap">{printConstraint(constraint)}</div>)
+        if (col < game.size) {
             result.push(<div className="grid-neutral-gap"/>)
         }
     }

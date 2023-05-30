@@ -28,20 +28,20 @@ class Game {
         return this.cells[coords.toIndex(this.size)] || EmptyCell.get()
     }
 
-    getRowConstraint(row: number, leftCellColumn: number): Constraint {
-        return this.rowConstraints[new Coordinates(row, leftCellColumn).toIndex(this.size)] || 'none';
+    getConstraintWithRight(coords: Coordinates): Constraint {
+        return this.rowConstraints[coords.toIndex(this.size)] || 'none';
     }
 
-    setRowConstraint(row: number, leftCellColumn: number, constraint: Constraint) {
-        this.rowConstraints[new Coordinates(row, leftCellColumn).toIndex(this.size)] = constraint;
+    setConstraintWithRight(coords: Coordinates, constraint: Constraint) {
+        this.rowConstraints[coords.toIndex(this.size)] = constraint;
     }
 
-    getColumnConstraint(column: number, aboveCellRow: number): Constraint {
-        return this.colConstraints[new Coordinates(aboveCellRow, column).toIndex(this.size)] || 'none';
+    getConstraintWithBelow(coords: Coordinates): Constraint {
+        return this.colConstraints[coords.toIndex(this.size)] || 'none';
     }
 
-    setColumnConstraint(column: number, aboveCellRow: number, constraint: Constraint) {
-        this.colConstraints[new Coordinates(aboveCellRow, column).toIndex(this.size)] = constraint;
+    setConstraintWithBelow(coords: Coordinates, constraint: Constraint) {
+        this.colConstraints[coords.toIndex(this.size)] = constraint;
     }
 }
 

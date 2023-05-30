@@ -14,7 +14,7 @@ const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
     for (let row = 1; row <= game.size; row++) {
         cells = cells.concat(<ValueRow game={game} row={row}/>)
         if (row < game.size) {
-            cells = cells.concat(<GapRow size={game.size}/>)
+            cells = cells.concat(<GapRow game={game} afterRow={row}/>)
         }
     }
 

@@ -77,21 +77,21 @@ describe('a valid game of size 5', () => {
         const row = 2;
         const leftCellColumn = 3;
 
-        expect(game.getRowConstraint(row, leftCellColumn)).toEqual('none');
+        expect(game.getConstraintWithRight(new Coordinates(row, leftCellColumn))).toEqual('none');
 
-        game.setRowConstraint(row, leftCellColumn, constraint);
+        game.setConstraintWithRight(new Coordinates(row, leftCellColumn), constraint);
 
-        expect(game.getRowConstraint(row, leftCellColumn)).toEqual(constraint);
+        expect(game.getConstraintWithRight(new Coordinates(row, leftCellColumn))).toEqual(constraint);
     })
 
     it.each(constraints)('allows setting "%s" column constraint', (constraint: Constraint) => {
         const column = 4;
         const aboveCellRow = 3;
 
-        expect(game.getColumnConstraint(column, aboveCellRow)).toEqual('none');
+        expect(game.getConstraintWithBelow(new Coordinates(aboveCellRow, column))).toEqual('none');
 
-        game.setColumnConstraint(column, aboveCellRow, constraint);
+        game.setConstraintWithBelow(new Coordinates(aboveCellRow, column), constraint);
 
-        expect(game.getColumnConstraint(column, aboveCellRow)).toEqual(constraint);
+        expect(game.getConstraintWithBelow(new Coordinates(aboveCellRow, column))).toEqual(constraint);
     })
 })
