@@ -1,1 +1,17 @@
-.Grid {}
+.Grid {
+    width: 16em;
+    height: 16em;
+    margin: auto;
+    display: grid;
+    font-size: 32px;
+    grid: repeat(4, 2em 1.5em) 2em / repeat(4, 2em 1.5em) 2em;
+    background: #82bad0;
+    padding: 1em;
+}
+
+.grid-value-item {
+    border: 2px solid black;
+    text-align: center;
+    background: aliceblue;
+    font-weight: bold;
+}

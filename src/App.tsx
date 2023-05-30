@@ -9,7 +9,7 @@ function App() {
         <h2>FUTOSHIKI</h2>
       </header>
       <main>
-        <Grid />
+        <Grid size={5} />
       </main>
     </div>
   );
