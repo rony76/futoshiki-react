@@ -1,12 +1,18 @@
 import {Game} from "./Game";
 import * as ohm from 'ohm-js';
+import {Coordinates} from "./Coordinates";
 
 function parseGame(definition: string): Game {
     const grammar = ohm.grammar(String.raw`
         FutoshikiGameGrammar {
-            GameDef = SizeDef
+            GameDef = SizeDef FixedValues
 
             SizeDef = "size" ":" num
+
+            FixedValues = FixedValue* 
+            FixedValue = Coordinates ":" num
+            
+            Coordinates = "[" num "," num "]"
 
             num = digit+
         }
@@ -15,8 +21,10 @@ function parseGame(definition: string): Game {
     let semantics = grammar.createSemantics();
 
     semantics.addOperation<Game>('game', {
-        GameDef(sizeDef) {
-            return sizeDef.asGame();
+        GameDef(sizeDef, fixedValues) {
+            const game = sizeDef.asGame();
+            fixedValues.configure(game);
+            return game;
         },
     })
     semantics.addOperation<Game>('asGame', {
@@ -24,6 +32,22 @@ function parseGame(definition: string): Game {
             return new Game(size.asNum());
         }
     })
+    semantics.addOperation<void>('configure(g)', {
+        FixedValues(f) {
+            const game: Game = this.args.g;
+            f.children.forEach(fv => fv.configure(game));
+        },
+        FixedValue(coords, _colon, val) {
+            const game: Game = this.args.g;
+            game.setFixed(coords.asCoords(), val.asNum());
+        },
+    })
+    semantics.addOperation<Coordinates>('asCoords', {
+        Coordinates(_openBracket, row, _comma, column, _closedBracket) {
+            return new Coordinates(row.asNum(), column.asNum());
+        }
+    })
+
     semantics.addOperation<number>('asNum', {
         num(_e) {
             return parseInt(this.sourceString, 10);

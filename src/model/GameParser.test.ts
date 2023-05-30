@@ -18,3 +18,18 @@ it('can parse empty game with size', () => {
         }
     }
 });
+
+it('can parse game with two fixed values', () => {
+    const size = 5;
+    const game = parseGame(`
+        size: ${size}
+        [2, 1]: 4
+        [3, 4]: 5
+    `);
+
+    expect(game).toBeTruthy();
+    expect(game.size).toEqual(size);
+    expect(game.getCell(new Coordinates(2, 1)).value).toEqual(4);
+    expect(game.getCell(new Coordinates(3, 4)).value).toEqual(5);
+
+});
