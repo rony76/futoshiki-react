@@ -1,10 +1,6 @@
 .GameBoard {
-    width: 16em;
-    height: 16em;
     margin: auto;
-    display: grid;
     font-size: 32px;
-    grid: repeat(4, 2em 1.5em) 2em / repeat(4, 2em 1.5em) 2em;
     background: #82bad0;
     padding: 1em;
 }

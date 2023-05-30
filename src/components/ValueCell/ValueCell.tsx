@@ -7,9 +7,9 @@ interface ValueCellProps {
 }
 
 const ValueCell: FC<ValueCellProps> = ({cell}: ValueCellProps) => (
-    <div className="ValueCell">
+    <td className="ValueCell">
         {cell.value}
-    </div>
+    </td>
 );
 
 export default ValueCell;

@@ -27,14 +27,14 @@ const ValueRow: FC<ValueRowProps> = ({game, row}: ValueRowProps) => {
 
         if (col < game.size) {
             let constraint = game.getConstraintWithRight(coords);
-            result.push(<div className="grid-h-gap">{printConstraint(constraint)}</div>)
+            result.push(<td className="grid-h-gap">{printConstraint(constraint)}</td>)
         }
     }
 
     return (
-        <>
+        <tr>
             {result}
-        </>
+        </tr>
     );
 }
 

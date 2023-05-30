@@ -1,1 +1,5 @@
 .ValueRow {}
+
+.grid-h-gap {
+    width: 1em;
+}

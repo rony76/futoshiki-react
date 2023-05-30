@@ -19,9 +19,9 @@ const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
     }
 
     return (
-        <div className="GameBoard">
+        <table className="GameBoard">
             {cells}
-        </div>
+        </table>
     );
 };
 
