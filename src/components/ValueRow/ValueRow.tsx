@@ -1,17 +1,19 @@
 import React, {FC} from 'react';
 import './ValueRow.css';
+import {Game} from "../../model/Game";
 
 interface ValueRowProps {
-    row: number,
-    size: number
+    game: Game,
+    row: number
 }
 
-const ValueRow: FC<ValueRowProps> = ({row, size}: ValueRowProps) => {
+const ValueRow: FC<ValueRowProps> = ({game, row}: ValueRowProps) => {
     let result = Array<JSX.Element>();
 
-    for (let col = 0; col < size; col++) {
-        result.push(<div className="grid-value-item">{row * size + col}</div>)
-        if (col < size - 1) {
+    for (let col = 1; col <= game.size; col++) {
+        const cell = game.getCell([row, col]);
+        result.push(<div className="grid-value-item">{cell.value}</div>)
+        if (col < game.size) {
             result.push(<div className="grid-vertical-gap"/>)
         }
     }

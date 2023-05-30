@@ -2,17 +2,19 @@ import React, {FC} from 'react';
 import './GameBoard.css';
 import ValueRow from "../ValueRow/ValueRow";
 import GapRow from "../GapRow/GapRow";
+import {Game} from "../../model/Game";
 
 interface GameBoardProps {
-    size: number,
+    game: Game
 }
-const GameBoard: FC<GameBoardProps> = ({size} : { size: number }) => {
+
+const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
     let cells = Array<JSX.Element>();
 
-    for (let row = 0; row < size; row++) {
-        cells = cells.concat(<ValueRow row={row} size={size} />)
-        if (row < size - 1) {
-            cells = cells.concat(<GapRow size={size}/>)
+    for (let row = 1; row <= game.size; row++) {
+        cells = cells.concat(<ValueRow game={game} row={row}/>)
+        if (row < game.size) {
+            cells = cells.concat(<GapRow size={game.size}/>)
         }
     }
 
