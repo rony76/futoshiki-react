@@ -3,7 +3,7 @@ import {Cell} from "./Cell";
 
 class Game {
     readonly size: number;
-    private cells: Array<number>;
+    private readonly cells: Array<number>;
 
     constructor(size: number) {
         if (size <= 0) {
@@ -15,22 +15,12 @@ class Game {
     }
 
     setFixed(coords: Coordinates, value: number): void {
-        this.cells[this.coordsToIndex(coords)] = value;
+        this.cells[coords.toIndex(this.size)] = value;
     }
 
     getCell(coords: Coordinates): Cell {
-        const value = this.cells[this.coordsToIndex(coords)];
+        const value = this.cells[coords.toIndex(this.size)];
         return {at: coords, value};
-    }
-
-    private coordsToIndex(coords: Coordinates): number {
-        if (coords[0] <= 0 || coords[0] > this.size) {
-            throw new Error('invalid row coordinate');
-        }
-        if (coords[1] <= 0 || coords[1] > this.size) {
-            throw new Error('invalid column coordinate');
-        }
-        return (coords[0] - 1) * this.size + (coords[1] - 1);
     }
 }
 

@@ -24,19 +24,19 @@ describe('a valid game of size 5', () => {
     it('allows to retrieve all cells, 1 based', () => {
         for (let row = 1; row <= size; row++) {
             for (let column = 1; column <= size; column++) {
-                let cell = game.getCell([row, column]);
+                let cell = game.getCell(new Coordinates(row, column));
                 expect(cell).not.toBeNull();
             }
         }
     })
 
     const badCoords: [string, Coordinates][] = [
-        ['above', [0, 2]],
-        ['above', [-3, 2]],
-        ['below', [6, 2]],
-        ['left', [2, -3]],
-        ['left', [2, 0]],
-        ['right', [2, 6]]
+        ['above', new Coordinates(0, 2)],
+        ['above', new Coordinates(-3, 2)],
+        ['below', new Coordinates(6, 2)],
+        ['left', new Coordinates(2, -3)],
+        ['left', new Coordinates(2, 0)],
+        ['right', new Coordinates(2, 6)]
     ];
     it.each(badCoords)('complains for bad cell coordinates when too %s', (where: string, coords: Coordinates) => {
         expect(() => {
@@ -59,15 +59,12 @@ it('can access valid cells', () => {
 it('can be set fixed values', () => {
     const game = new Game(5);
 
-    const coords1: Coordinates = [1, 1];
-    const coords2: Coordinates = [4, 2];
+    const coords = new Coordinates(4, 2);
 
-    expect(game.getCell(coords1).value).not.toBeTruthy();
-    expect(game.getCell(coords2).value).not.toBeTruthy();
+    expect(game.getCell(coords).value).not.toBeTruthy();
 
     const fixedValue = 2;
-    game.setFixed([4, 2], fixedValue);
+    game.setFixed(coords, fixedValue);
 
-    expect(game.getCell(coords1).value).not.toBeTruthy();
-    expect(game.getCell(coords2).value).toEqual(fixedValue);
+    expect(game.getCell(coords).value).toEqual(fixedValue);
 });
