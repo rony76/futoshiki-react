@@ -5,11 +5,10 @@ import {useGame} from "../../useGame";
 import Loading from "../Loading/Loading";
 
 interface GameWrapperProps {
-    size: number
 }
 
-const GameWrapper: FC<GameWrapperProps> = ({size}: GameWrapperProps) => {
-    const game = useGame(size);
+const GameWrapper: FC<GameWrapperProps> = () => {
+    const game = useGame();
     return (
         <div className="GameWrapper">
             {game && <GameBoard game={game}/>}

@@ -12,7 +12,7 @@ function App() {
                 <h2>FUTOSHIKI</h2>
             </header>
             <main>
-                <GameWrapper size={size}/>
+                <GameWrapper />
                 <Instructions size={size}/>
             </main>
         </div>
