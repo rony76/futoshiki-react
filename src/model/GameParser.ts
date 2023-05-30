@@ -4,7 +4,9 @@ import * as ohm from 'ohm-js';
 function parseGame(definition: string): Game {
     const grammar = ohm.grammar(String.raw`
         FutoshikiGameGrammar {
-            GameDef = "size" ":" num
+            GameDef = SizeDef
+
+            SizeDef = "size" ":" num
 
             num = digit+
         }
@@ -12,12 +14,17 @@ function parseGame(definition: string): Game {
 
     let semantics = grammar.createSemantics();
 
-    semantics.addOperation('game', {
-        GameDef(_size, _colon, size): Game {
-            return new Game(size.eval());
+    semantics.addOperation<Game>('game', {
+        GameDef(sizeDef) {
+            return sizeDef.asGame();
         },
     })
-    semantics.addOperation('eval', {
+    semantics.addOperation<Game>('asGame', {
+        SizeDef(_size, _colon, size) {
+            return new Game(size.asNum());
+        }
+    })
+    semantics.addOperation<number>('asNum', {
         num(_e) {
             return parseInt(this.sourceString, 10);
         }
