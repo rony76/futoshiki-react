@@ -7,8 +7,9 @@ interface InstructionsProps {
 
 const Instructions: FC<InstructionsProps> = ({size}: InstructionsProps) => (
     <div className="Instructions">
-        <p>Completate lo schema con i numeri da 1 a {size}, rispettando i segni di &lt; (minore) e &gt; (maggiore),
-            in modo che in ciascuna riga e colonna i numeri siano tutti diversi tra loro.</p>
+        <p>Populate the board with numbers between 1 to {size}, <br/>
+            respecting the indications on <strong>&lt;</strong> (less than) and <strong>&gt;</strong> (greater than), <br/>
+            so that in each row and each column, all the numbers are unique.</p>
     </div>
 );
 
