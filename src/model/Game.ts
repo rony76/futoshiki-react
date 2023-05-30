@@ -1,9 +1,9 @@
 import {Coordinates} from "./Coordinates";
-import {Cell} from "./Cell";
+import {Cell, EmptyCell, ValueCell} from "./Cell";
 
 class Game {
     readonly size: number;
-    private readonly cells: Array<number>;
+    private readonly cells: Array<Cell>;
 
     constructor(size: number) {
         if (size <= 0) {
@@ -15,12 +15,11 @@ class Game {
     }
 
     setFixed(coords: Coordinates, value: number): void {
-        this.cells[coords.toIndex(this.size)] = value;
+        this.cells[coords.toIndex(this.size)] = new ValueCell('fixed', value);
     }
 
     getCell(coords: Coordinates): Cell {
-        const value = this.cells[coords.toIndex(this.size)];
-        return {at: coords, value};
+        return this.cells[coords.toIndex(this.size)] || EmptyCell.get()
     }
 }
 
