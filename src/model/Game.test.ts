@@ -30,11 +30,7 @@ describe('a valid game of size 5', () => {
     })
 
     const badCoords: [string, Coordinates][] = [
-        ['above', at(0, 2)],
-        ['above', at(-3, 2)],
         ['below', at(6, 2)],
-        ['left', at(2, -3)],
-        ['left', at(2, 0)],
         ['right', at(2, 6)]
     ];
     it.each(badCoords)('complains for bad cell coordinates when too %s', (where: string, coords: Coordinates) => {

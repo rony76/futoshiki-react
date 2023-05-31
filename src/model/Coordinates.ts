@@ -3,6 +3,9 @@ class Coordinates {
     readonly col: number;
 
     constructor(row: number, col: number) {
+        if (row < 1 || col < 1) {
+            throw new Error('Invalid value for coordinate');
+        }
         this.row = row;
         this.col = col;
     }
@@ -22,9 +25,15 @@ class Coordinates {
     }
 
     isSameAs(other: Coordinates | null): boolean {
-        return (other !== null) &&
-            this.row === other.row &&
-            this.col === other.col;
+        if (this === other) return true;
+        if (other === null) return false;
+        return this.row === other.row && this.col === other.col;
+    }
+
+    isSiblingOf(other: Coordinates | null) {
+        if (this === other) return true;
+        if (other === null) return false;
+        return this.row === other.row || this.col === other.col;
     }
 }
 
