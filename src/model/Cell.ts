@@ -13,6 +13,10 @@ class ValueCell implements Cell {
         this.value = value;
         this.type = type;
     }
+
+    toString(): string {
+        return `${this.value} (${this.type})`;
+    }
 }
 
 class EmptyCell implements Cell {
@@ -26,6 +30,10 @@ class EmptyCell implements Cell {
 
     static get(): Cell {
         return EmptyCell.instance;
+    }
+
+    toString(): string {
+        return 'empty';
     }
 }
 
