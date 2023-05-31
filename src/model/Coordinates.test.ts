@@ -1,4 +1,4 @@
-import {at, Coordinates} from "./Coordinates";
+import {at, Coordinates, Direction} from "./Coordinates";
 
 
 const badCoords: [string, number, number][] = [
@@ -65,3 +65,41 @@ it('two cells on different rows and columns are not sibling', () => {
     expect(at(3, 3).isSiblingOf(at(1, 4))).toEqual(false);
     expect(at(3, 3).isSiblingOf(at(4, 1))).toEqual(false);
 })
+
+describe('Within a board of size 5', () => {
+    const boardSize = 5;
+
+    const directionChecks: [Direction, string, number, number, boolean][] = [
+        ['left', 'center', 4, 2, true],
+        ['left', 'left border', 4, 1, false],
+        ['right', 'center', 2, 2, true],
+        ['right', 'right border', 2, 5, false],
+        ['up', 'center', 3, 3, true],
+        ['up', 'top row', 1, 3, false],
+        ['down', 'center', 3, 2, true],
+        ['down', 'bottom row', 5, 2, false],
+    ];
+    it.each(directionChecks)('can detect if there is room to go %s from %s', (dir, position, row, col, expected) => {
+        expect(at(row, col).canMove(dir, boardSize)).toEqual(expected)
+    });
+
+    const goodMovements: [Direction, number, number, number, number][] = [
+        ['left', 2, 2, 2, 1],
+        ['right', 4, 2, 4, 3],
+        ['up', 2, 3, 1, 3],
+        ['down', 4, 2, 5, 2],
+    ];
+    it.each(goodMovements)('gets next cell going %s from [%d, %d]', (dir, row1, col1, row2, col2) => {
+        expect(at(row1, col1).getNextGoing(dir, boardSize).isSameAs(at(row2, col2))).toEqual(true);
+    });
+
+    const badMovements: [Direction, string, number, number][] = [
+        ['left', 'left border', 4, 1],
+        ['right', 'right border', 2, 5],
+        ['up', 'top row', 1, 3],
+        ['down', 'bottom row', 5, 2],
+    ];
+    it.each(badMovements)('gets next cell going %s from %s', (dir, position, row, col) => {
+        expect(() => at(row, col).getNextGoing(dir, boardSize)).toThrow();
+    });
+});

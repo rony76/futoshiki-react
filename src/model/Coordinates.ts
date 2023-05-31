@@ -1,3 +1,5 @@
+type Direction = 'up' | 'down' | 'left' | 'right'
+
 class Coordinates {
     readonly row: number;
     readonly col: number;
@@ -35,8 +37,37 @@ class Coordinates {
         if (other === null) return false;
         return this.row === other.row || this.col === other.col;
     }
+
+    canMove(dir: Direction, boardSize: number): boolean {
+        switch (dir) {
+            case 'up':
+                return this.row > 1;
+            case 'down':
+                return this.row < boardSize;
+            case 'left':
+                return this.col > 1;
+            case 'right':
+                return this.col < boardSize;
+        }
+    }
+
+    getNextGoing(dir: Direction, boardSize: number): Coordinates {
+        if (!this.canMove(dir, boardSize)) throw new Error('Cannot move ' + dir);
+
+        switch (dir) {
+            case 'up':
+                return at(this.row - 1, this.col);
+            case 'down':
+                return at(this.row + 1, this.col);
+            case 'left':
+                return at(this.row, this.col - 1);
+            case 'right':
+                return at(this.row, this.col + 1);
+        }
+    }
 }
 
+export type {Direction}
 export {Coordinates}
 export function at(row: number, col: number): Coordinates {
     return new Coordinates(row, col);
