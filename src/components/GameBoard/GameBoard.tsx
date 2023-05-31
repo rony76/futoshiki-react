@@ -1,14 +1,18 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import './GameBoard.css';
 import ValueRow from "../ValueRow/ValueRow";
 import GapRow from "../GapRow/GapRow";
 import {Game} from "../../model/Game";
+import {Coordinates} from "../../model/Coordinates";
+import {ActiveCellContext} from '../../ActiveCellContext';
 
 interface GameBoardProps {
     game: Game
 }
 
 const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
+    const [activeCell, setActiveCell] = useState<Coordinates | null>(null);
+
     let cells = Array<JSX.Element>();
 
     for (let row = 1; row <= game.size; row++) {
@@ -20,7 +24,11 @@ const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
 
     return (
         <table className="GameBoard">
-            {cells}
+            <tbody>
+            <ActiveCellContext.Provider value={[activeCell, setActiveCell]}>
+                {cells}
+            </ActiveCellContext.Provider>
+            </tbody>
         </table>
     );
 };

@@ -20,6 +20,12 @@ class Coordinates {
     toString(): string {
         return `[${this.row}, ${this.col}]`
     }
+
+    isSameAs(other: Coordinates | null): boolean {
+        return (other !== null) &&
+            this.row === other.row &&
+            this.col === other.col;
+    }
 }
 
 export {Coordinates}

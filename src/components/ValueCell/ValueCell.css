@@ -6,3 +6,9 @@
     height: 1.5em;
     width: 1.5em;
 }
+
+.active-cell {
+    border: 2px solid #fc6882;
+    background: #f3dadb;
+    color: #fc6882;
+}
