@@ -7,7 +7,8 @@ import {Coordinates, Direction} from "../../model/Coordinates";
 import {ActiveCellContext} from '../../ActiveCellContext';
 
 interface GameBoardProps {
-    game: Game
+    game: Game,
+    onUserValue: (coords: Coordinates, value: number) => void
 }
 
 function getArrowKeyDirection(key: string): Direction | null {
@@ -25,7 +26,7 @@ function getArrowKeyDirection(key: string): Direction | null {
     }
 }
 
-const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
+const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
     const [activeCell, setActiveCell] = useState<Coordinates | null>(null);
 
     let cells = Array<JSX.Element>();
@@ -41,6 +42,12 @@ const GameBoard: FC<GameBoardProps> = ({game}: GameBoardProps) => {
             }
         } else if (e.key === 'Escape') {
             setActiveCell(null);
+        } else {
+            const val = parseInt(e.key);
+            const cell = game.getCell(activeCell);
+            if (val > 0 && val <= game.size && cell.type !== 'fixed') {
+                onUserValue(activeCell, val);
+            }
         }
     }
 

@@ -2,7 +2,7 @@ import {Game} from "../model/Game";
 import {useEffect, useState} from "react";
 import {createSampleGame} from "../model/SampleGame";
 
-export function useGame(): Game | null {
+export function useGame(): [Game | null, (g: Game) => void] {
     const [game, setGame] = useState<Game | null>(null);
 
     useEffect(() => {
@@ -15,5 +15,5 @@ export function useGame(): Game | null {
         }
     }, [])
 
-    return game;
+    return [game, setGame];
 }
