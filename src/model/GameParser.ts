@@ -55,7 +55,7 @@ function parseGame(definition: string): Game {
         },
         FixedValue(coords, _colon, val) {
             const game: Game = this.args.g;
-            game.setFixed(coords.asCoords(), val.asNum());
+            game.setFixedValue(coords.asCoords(), val.asNum());
         },
         Constraints(c) {
             const game: Game = this.args.g;

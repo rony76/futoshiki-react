@@ -16,16 +16,25 @@ class Game {
 
         this.size = size;
         this.cells = new Array(size * size);
+        this.cells.fill(EmptyCell.instance);
         this.rowConstraints = new Array(size * size);
         this.colConstraints = new Array(size * size);
     }
 
-    setFixed(coords: Coordinates, value: number): void {
+    setFixedValue(coords: Coordinates, value: number): void {
         this.cells[coords.toIndex(this.size)] = new ValueCell('fixed', value);
     }
 
+    setUserValue(coords: Coordinates, value: number) {
+        let index = coords.toIndex(this.size);
+        if (this.cells[index].type === 'fixed') {
+            throw new Error('Cannot override fixed value with user value')
+        }
+        this.cells[index] = new ValueCell('user', value);
+    }
+
     getCell(coords: Coordinates): Cell {
-        return this.cells[coords.toIndex(this.size)] || EmptyCell.get()
+        return this.cells[coords.toIndex(this.size)]
     }
 
     getConstraintWithRight(coords: Coordinates): Constraint {

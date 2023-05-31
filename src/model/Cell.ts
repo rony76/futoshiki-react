@@ -29,5 +29,5 @@ class EmptyCell implements Cell {
     }
 }
 
-export type {Cell}
+export type {Cell, CellType}
 export {ValueCell, EmptyCell}
