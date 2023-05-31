@@ -9,28 +9,40 @@ class Game {
     private readonly rowConstraints: Array<Constraint>;
     private readonly colConstraints: Array<Constraint>;
 
-    constructor(size: number) {
+    private constructor(size: number, cells: Array<Cell>, rowConstraints: Array<Constraint>, colConstraints: Array<Constraint>) {
+        this.size = size;
+        this.cells = cells;
+        this.rowConstraints = rowConstraints;
+        this.colConstraints = colConstraints;
+    }
+
+    public static emptyForSize(size: number): Game {
         if (size <= 0) {
             throw new Error('invalid game size');
         }
+        const cells = new Array(size * size);
+        cells.fill(EmptyCell.instance);
+        const rowConstraints = new Array(size * size);
+        const colConstraints = new Array(size * size);
 
-        this.size = size;
-        this.cells = new Array(size * size);
-        this.cells.fill(EmptyCell.instance);
-        this.rowConstraints = new Array(size * size);
-        this.colConstraints = new Array(size * size);
+        return new Game(size, cells, rowConstraints, colConstraints);
     }
 
     setFixedValue(coords: Coordinates, value: number): void {
         this.cells[coords.toIndex(this.size)] = new ValueCell('fixed', value);
     }
 
-    setUserValue(coords: Coordinates, value: number) {
+    withUserValue(coords: Coordinates, value: number): Game {
         let index = coords.toIndex(this.size);
         if (this.cells[index].type === 'fixed') {
             throw new Error('Cannot override fixed value with user value')
         }
-        this.cells[index] = new ValueCell('user', value);
+
+        return new Game(
+            this.size,
+            this.cells.map((cell, idx) => idx === index ? new ValueCell('user', value) : cell),
+            this.rowConstraints,
+            this.colConstraints);
     }
 
     getCell(coords: Coordinates): Cell {

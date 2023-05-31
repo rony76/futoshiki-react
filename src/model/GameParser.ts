@@ -40,7 +40,7 @@ function parseGame(definition: string): Game {
     })
     semantics.addOperation<Game>('asGame', {
         SizeDef(_size, _colon, size) {
-            return new Game(size.asNum());
+            return Game.emptyForSize(size.asNum());
         }
     })
     semantics.addOperation<void>('configure(g)', {

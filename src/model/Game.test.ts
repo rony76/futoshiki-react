@@ -4,11 +4,11 @@ import {at, Coordinates} from "./Coordinates";
 
 it('cannot be created with non positive size', () => {
     expect(() => {
-        new Game(-1)
+        Game.emptyForSize(-1)
     }).toThrow();
 
     expect(() => {
-        new Game(0)
+        Game.emptyForSize(0)
     }).toThrow();
 });
 
@@ -17,7 +17,7 @@ describe('a valid game of size 5', () => {
     let game: Game;
 
     beforeEach(() => {
-        game = new Game(5);
+        game = Game.emptyForSize(size)
     })
 
     it('allows to retrieve all cells, 1 based', () => {
@@ -74,9 +74,9 @@ describe('a valid game of size 5', () => {
         expect(game.getCell(coords).type).toEqual('empty');
 
         const fixedValue = 2;
-        game.setUserValue(coords, fixedValue);
+        let updatedGame = game.withUserValue(coords, fixedValue);
 
-        const cellAfter = game.getCell(coords);
+        const cellAfter = updatedGame.getCell(coords);
         expect(cellAfter.value).toEqual(fixedValue);
         expect(cellAfter.type).toEqual('user');
     })
@@ -87,16 +87,16 @@ describe('a valid game of size 5', () => {
         expect(game.getCell(coords).type).toEqual('empty');
 
         const firstValue = 5;
-        game.setUserValue(coords, firstValue);
+        let updatedGame = game.withUserValue(coords, firstValue);
 
-        const cellAfterFirstSet = game.getCell(coords);
+        const cellAfterFirstSet = updatedGame.getCell(coords);
         expect(cellAfterFirstSet.value).toEqual(firstValue);
         expect(cellAfterFirstSet.type).toEqual('user');
 
         const secondValue = 3;
-        game.setUserValue(coords, secondValue);
+        updatedGame = game.withUserValue(coords, secondValue);
 
-        const cellAfterSecondSet = game.getCell(coords);
+        const cellAfterSecondSet = updatedGame.getCell(coords);
         expect(cellAfterSecondSet.value).toEqual(secondValue);
         expect(cellAfterSecondSet.type).toEqual('user');
     })
@@ -115,7 +115,7 @@ describe('a valid game of size 5', () => {
 
         const secondValue = 3;
         expect(() => {
-            game.setUserValue(coords, secondValue);
+            game.withUserValue(coords, secondValue);
         }).toThrow();
     })
 
