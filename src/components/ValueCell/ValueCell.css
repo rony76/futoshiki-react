@@ -9,6 +9,12 @@
 
 .active-cell {
     border: 2px solid #fc6882;
-    background: #f3dadb;
     color: #fc6882;
+    background: #f3dadb;
+}
+
+.sibling-cell {
+    border: 2px solid #be9ea0;
+    color: #be9ea0;
+    background: white;
 }

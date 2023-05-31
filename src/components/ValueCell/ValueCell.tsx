@@ -13,7 +13,8 @@ const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
     const [activeCell, setActiveCell] = useContext(ActiveCellContext);
 
     const cell = game.getCell(coords);
-    const cellIsActive = (coords.isSameAs(activeCell));
+    const cellIsActive = coords.isSameAs(activeCell);
+    const cellIsSibling = !cellIsActive && coords.isSiblingOf(activeCell);
 
     const onClick = () => {
         if (cell.type === 'fixed') {
@@ -24,6 +25,7 @@ const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
 
     let className = "ValueCell";
     if (cellIsActive) className += " active-cell"
+    if (cellIsSibling) className += " sibling-cell"
     return (
         <td className={className} onClick={onClick}>
             {cell.value}
