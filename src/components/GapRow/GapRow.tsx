@@ -25,9 +25,9 @@ const GapRow: FC<GapRowProps> = ({game, afterRow}: GapRowProps) => {
     for (let col = 1; col <= game.size; col++) {
         const coords = at(afterRow, col);
         let constraint = game.getConstraintWithBelow(coords);
-        result.push(<td className="grid-v-gap">{printConstraint(constraint)}</td>)
+        result.push(<td className="grid-v-gap" key={"val" + col}>{printConstraint(constraint)}</td>)
         if (col < game.size) {
-            result.push(<td className="grid-neutral-gap"/>)
+            result.push(<td className="grid-neutral-gap" key={"gap" + col}/>)
         }
     }
 

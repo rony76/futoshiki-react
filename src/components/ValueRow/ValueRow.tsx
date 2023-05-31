@@ -23,11 +23,16 @@ const ValueRow: FC<ValueRowProps> = ({game, row}: ValueRowProps) => {
     for (let col = 1; col <= game.size; col++) {
         const coords = at(row, col);
         const cell = game.getCell(coords);
-        result.push(<ValueCell cell={cell} />)
+        result.push(<ValueCell
+            key={"val" + col}
+            cell={cell} />)
 
         if (col < game.size) {
             let constraint = game.getConstraintWithRight(coords);
-            result.push(<td className="grid-h-gap">{printConstraint(constraint)}</td>)
+            result.push(<td
+                key={"gap" + col}
+                className="grid-h-gap"
+                >{printConstraint(constraint)}</td>)
         }
     }
 
