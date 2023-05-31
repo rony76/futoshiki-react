@@ -32,7 +32,7 @@ const GapRow: FC<GapRowProps> = ({game, afterRow}: GapRowProps) => {
     }
 
     return (
-        <tr>
+        <tr className="GapRow">
             {result}
         </tr>
     );

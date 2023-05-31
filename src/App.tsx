@@ -1,11 +1,8 @@
 import React from 'react';
 import './App.css';
-import Instructions from "./components/Instructions/Instructions";
 import GameWrapper from "./components/GameWrapper/GameWrapper";
 
 function App() {
-    const size = 5;
-
     return (
         <div className="App">
             <header className="App-header">
@@ -13,7 +10,6 @@ function App() {
             </header>
             <main>
                 <GameWrapper />
-                <Instructions size={size}/>
             </main>
         </div>
     );

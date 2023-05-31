@@ -3,6 +3,7 @@ import './GameWrapper.css';
 import GameBoard from "../GameBoard/GameBoard";
 import {useGame} from "../../useGame";
 import Loading from "../Loading/Loading";
+import Instructions from "../Instructions/Instructions";
 
 interface GameWrapperProps {
 }
@@ -12,7 +13,8 @@ const GameWrapper: FC<GameWrapperProps> = () => {
     return (
         <div className="GameWrapper">
             {game && <GameBoard game={game}/>}
-            {!game && <Loading /> }
+            {!game && <Loading/>}
+            {game && <Instructions size={game.size}/>}
         </div>
     );
 };
