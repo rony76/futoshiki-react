@@ -15,7 +15,12 @@ const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
     const cell = game.getCell(coords);
     const cellIsActive = (coords.isSameAs(activeCell));
 
-    const onClick = () => setActiveCell(coords);
+    const onClick = () => {
+        if (cell.type === 'fixed') {
+            return;
+        }
+        setActiveCell(coords);
+    };
 
     let className = "ValueCell";
     if (cellIsActive) className += " active-cell"
