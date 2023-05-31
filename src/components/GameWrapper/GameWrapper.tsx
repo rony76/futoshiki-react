@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import './GameWrapper.css';
 import GameBoard from "../GameBoard/GameBoard";
-import {useGame} from "../../useGame";
+import {useGame} from "../../hooks/useGame";
 import Loading from "../Loading/Loading";
 import Instructions from "../Instructions/Instructions";
 

@@ -1,6 +1,6 @@
-import {Game} from "./model/Game";
+import {Game} from "../model/Game";
 import {useState} from "react";
-import {createSampleGame} from "./model/SampleGame";
+import {createSampleGame} from "../model/SampleGame";
 
 export function useGame(): Game | null {
     const [game, setGame] = useState<Game | null>(null);
