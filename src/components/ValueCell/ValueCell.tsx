@@ -1,16 +1,24 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import './ValueCell.css';
-import {Cell} from "../../model/Cell";
+import {Coordinates} from "../../model/Coordinates";
+import {Game} from "../../model/Game";
+import {ActiveCellContext} from "../../ActiveCellContext";
 
 interface ValueCellProps {
-    cell: Cell,
-    isActive: boolean,
-    onClick: () => void
+    game: Game,
+    coords: Coordinates
 }
 
-const ValueCell: FC<ValueCellProps> = ({cell, isActive, onClick}: ValueCellProps) => {
+const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
+    const [activeCell, setActiveCell] = useContext(ActiveCellContext);
+
+    const cell = game.getCell(coords);
+    const cellIsActive = (coords.isSameAs(activeCell));
+
+    const onClick = () => setActiveCell(coords);
+
     let className = "ValueCell";
-    if (isActive) className += " active-cell"
+    if (cellIsActive) className += " active-cell"
     return (
         <td className={className} onClick={onClick}>
             {cell.value}
