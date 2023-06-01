@@ -23,9 +23,11 @@ const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
         setActiveCell(coords);
     };
 
-    let className = "ValueCell";
-    if (cellIsActive) className += " active-cell"
-    if (cellIsSibling) className += " sibling-cell"
+    let className = 'ValueCell';
+    if (cellIsActive) className += ' active-cell'
+    if (cellIsSibling) className += ' sibling-cell'
+    if (cell.type === 'user') className += ' user-value'
+    if (cell.type === 'fixed') className += ' fixed-value'
     return (
         <td className={className} onClick={onClick}>
             {cell.value}

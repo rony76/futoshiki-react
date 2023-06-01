@@ -2,19 +2,27 @@
     border: 2px solid black;
     text-align: center;
     background: aliceblue;
-    font-weight: bold;
     height: 1.5em;
     width: 1.5em;
 }
 
+.fixed-value {
+    font-weight: bold;
+}
+
+.user-value {
+
+}
+
 .active-cell {
-    border: 2px solid #fc6882;
-    color: #fc6882;
-    background: #f3dadb;
+    border-width: 2px;
+    border-color: #2f9f0c;
+    border-style: dashed;
+    color: #2f9f0c;
+    background: #acee88;
+    font-weight: bold;
 }
 
 .sibling-cell {
-    border: 2px solid #be9ea0;
-    color: #be9ea0;
-    background: white;
+    background: #acee88;
 }
