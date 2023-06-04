@@ -3,27 +3,13 @@ import './GameBoard.css';
 import ValueRow from "../ValueRow/ValueRow";
 import GapRow from "../GapRow/GapRow";
 import {Game} from "../../model/Game";
-import {Coordinates, Direction} from "../../model/Coordinates";
+import {Coordinates} from "../../model/Coordinates";
 import {ActiveCellContext} from '../../ActiveCellContext';
+import {keyHandler} from "./key-handler";
 
 interface GameBoardProps {
     game: Game,
     onUserValue: (coords: Coordinates, value: number) => void
-}
-
-function getArrowKeyDirection(key: string): Direction | null {
-    switch (key) {
-        case 'ArrowLeft':
-            return 'left';
-        case 'ArrowRight':
-            return 'right';
-        case 'ArrowUp':
-            return 'up';
-        case 'ArrowDown':
-            return 'down';
-        default:
-            return null;
-    }
 }
 
 const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
@@ -31,25 +17,7 @@ const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
 
     let cells = Array<JSX.Element>();
 
-    const captureKeys = (e: React.KeyboardEvent) => {
-        if (!activeCell) return;
-
-        const dir: Direction | null = getArrowKeyDirection(e.key);
-
-        if (dir !== null) {
-            if (activeCell.canMove(dir, game.size)) {
-                setActiveCell(activeCell.getNextGoing(dir, game.size))
-            }
-        } else if (e.key === 'Escape') {
-            setActiveCell(null);
-        } else {
-            const val = parseInt(e.key);
-            const cell = game.getCell(activeCell);
-            if (val > 0 && val <= game.size && cell.type !== 'fixed') {
-                onUserValue(activeCell, val);
-            }
-        }
-    }
+    const onKeyDown = keyHandler(game, activeCell, setActiveCell, onUserValue);
 
     for (let row = 1; row <= game.size; row++) {
         cells = cells.concat(<ValueRow game={game} row={row} key={"val" + row}/>)
@@ -59,7 +27,7 @@ const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
     }
 
     return (
-        <table className="GameBoard" tabIndex={0} onKeyDown={captureKeys}>
+        <table className="GameBoard" tabIndex={0} onKeyDown={onKeyDown}>
             <tbody>
             <ActiveCellContext.Provider value={[activeCell, setActiveCell]}>
                 {cells}
