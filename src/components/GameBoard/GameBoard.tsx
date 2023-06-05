@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import './GameBoard.css';
 import ValueRow from "../ValueRow/ValueRow";
 import GapRow from "../GapRow/GapRow";
@@ -13,6 +13,13 @@ interface GameBoardProps {
 }
 
 const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
+    const tableRef = useRef<HTMLTableElement>(null);
+    useEffect(() => {
+        if (tableRef.current) {
+            tableRef.current.focus();
+        }
+    }, [])
+
     const [activeCell, setActiveCell] = useState<Coordinates | null>(null);
 
     let cells = Array<JSX.Element>();
@@ -27,7 +34,7 @@ const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
     }
 
     return (
-        <table className="GameBoard" tabIndex={0} onKeyDown={onKeyDown}>
+        <table className="GameBoard" tabIndex={0} onKeyDown={onKeyDown} ref={tableRef}>
             <tbody>
             <ActiveCellContext.Provider value={[activeCell, setActiveCell]}>
                 {cells}
