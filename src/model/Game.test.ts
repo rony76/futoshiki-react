@@ -1,4 +1,4 @@
-import {Game} from "./Game";
+import {Game, rowColIterate} from "./Game";
 import {at, Coordinates} from "./Coordinates";
 import {Constraint} from "./Cell";
 
@@ -141,5 +141,54 @@ describe('a valid game of size 5', () => {
         game.setConstraintWithBelow(at(aboveCellRow, column), constraint);
 
         expect(game.getConstraintWithBelow(at(aboveCellRow, column))).toEqual(constraint);
+    })
+
+    describe('validating values', () => {
+        it('has valid status when empty', () => {
+            rowColIterate(size, (row, col) => {
+                expect(game.getStatus(at(row, col))).toEqual('ok')
+            })
+        })
+
+
+        it('complains for the same value twice in a row', () => {
+            game = game
+                .withUserValue(at(1, 1), 1)
+                .withUserValue(at(1, 2), 1);
+
+            expect(game.getStatus(at(1, 1))).toEqual('not-unique');
+            expect(game.getStatus(at(1, 2))).toEqual('not-unique');
+            expect(game.getStatus(at(1, 3))).toEqual('ok');
+            expect(game.getStatus(at(1, 4))).toEqual('ok');
+            expect(game.getStatus(at(1, 5))).toEqual('ok');
+        })
+
+        it('complains for the same value twice in a column', () => {
+            game = game
+                .withUserValue(at(3, 4), 3)
+                .withUserValue(at(4, 4), 3);
+
+            expect(game.getStatus(at(1, 4))).toEqual('ok');
+            expect(game.getStatus(at(2, 4))).toEqual('ok');
+            expect(game.getStatus(at(3, 4))).toEqual('not-unique');
+            expect(game.getStatus(at(4, 4))).toEqual('not-unique');
+            expect(game.getStatus(at(5, 4))).toEqual('ok');
+        })
+
+        it('accepts different values in a row', () => {
+            game = game
+                .withUserValue(at(3, 1), 1)
+                .withUserValue(at(3, 2), 2)
+                .withUserValue(at(3, 3), 3)
+                .withUserValue(at(3, 4), 4)
+                .withUserValue(at(3, 5), 5)
+
+
+            expect(game.getStatus(at(3, 1))).toEqual('ok');
+            expect(game.getStatus(at(3, 2))).toEqual('ok');
+            expect(game.getStatus(at(3, 3))).toEqual('ok');
+            expect(game.getStatus(at(3, 4))).toEqual('ok');
+            expect(game.getStatus(at(3, 5))).toEqual('ok');
+        })
     })
 })

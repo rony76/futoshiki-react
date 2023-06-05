@@ -1,13 +1,25 @@
-import {Coordinates} from "./Coordinates";
+import {at, Coordinates} from "./Coordinates";
 import {Cell, CellValue, Constraint, ValueCell} from "./Cell";
+
+type CellStatus = 'ok' | 'not-unique'
+
+const rowColIterate = (size: number, action: (row: number, col: number) => void) => {
+    for (let row = 1; row <= size; row++) {
+        for (let col = 1; col <= size; col++) {
+            action(row, col);
+        }
+    }
+}
 
 class Game {
     readonly size: number;
     private readonly cells: Array<Cell>;
+    private readonly statuses: Array<CellStatus>;
 
     private constructor(size: number, cells: Array<Cell>) {
         this.size = size;
         this.cells = cells;
+        this.statuses = this.validate();
     }
 
     public static emptyForSize(size: number): Game {
@@ -35,10 +47,11 @@ class Game {
             throw new Error('Cannot override fixed value with user value')
         }
 
-        let newValue = new ValueCell('user', value);
+        const newValue = new ValueCell('user', value);
+        const updatedCells = this.cells.map((cell, idx) => idx === index ? cell.withValue(newValue) : cell);
         return new Game(
             this.size,
-            this.cells.map((cell, idx) => idx === index ? cell.withValue(newValue) : cell));
+            updatedCells);
     }
 
     private getCell(coords: Coordinates) {
@@ -65,9 +78,59 @@ class Game {
         this.updateCellAt(coords, c => c.withBelowConstraint(constraint))
     }
 
-    public toString = () : string => {
+    public toString = (): string => {
         return `Game of size ${this.size}`;
+    }
+
+    getStatus(coords: Coordinates): CellStatus {
+        const index = coords.toIndex(this.size);
+        return this.statuses[index];
+    }
+
+    private validate(): Array<CellStatus> {
+        function initBidimensionalCheck(size: number) {
+            const check = Array(size);
+            for (let i = 0; i < size; i++) {
+                check[i] = Array(size);
+                check[i].fill(0);
+            }
+            return check;
+        }
+
+        const rowChecks = initBidimensionalCheck(this.size);
+        const colChecks = initBidimensionalCheck(this.size);
+
+
+        rowColIterate(this.size, (row, col) => {
+            const index = at(row, col);
+            const maybeValue = this.getCell(index).value.value
+            if (maybeValue) {
+                rowChecks[row - 1][maybeValue - 1]++;
+                colChecks[col - 1][maybeValue - 1]++;
+            }
+        });
+
+        const statuses = Array<CellStatus>(this.size * this.size);
+
+        rowColIterate(this.size, (row, col) => {
+            const index = at(row, col).toIndex(this.size);
+            const maybeValue = this.cells[index].value.value
+            if (maybeValue) {
+                const rowConflict = rowChecks[row - 1][maybeValue - 1] > 1;
+                const colConflict = colChecks[col - 1][maybeValue - 1] > 1;
+                if (rowConflict || colConflict) {
+                    statuses[index] = 'not-unique'
+                } else {
+                    statuses[index] = 'ok';
+                }
+            } else {
+                statuses[index] = 'ok';
+            }
+        });
+
+        return statuses;
     }
 }
 
-export {Game};
+export {Game, rowColIterate};
+export type {CellStatus};
