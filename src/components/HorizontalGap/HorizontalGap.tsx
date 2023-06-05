@@ -1,30 +1,8 @@
 import React, {FC} from 'react';
 import './HorizontalGap.css';
-import {Constraint} from "../../model/Cell";
-import {Game} from "../../model/Game";
-import {Coordinates} from "../../model/Coordinates";
+import {Gap, GapProps} from "../Gap/Gap";
 
-interface HorizontalGapProps {
-    game: Game,
-    coords: Coordinates
-}
-
-const printConstraint = (c: Constraint) => {
-    switch (c) {
-        case 'gt':
-            return '>';
-        case 'lt':
-            return '<';
-        case 'none':
-            return '';
-    }
-}
-
-const HorizontalGap: FC<HorizontalGapProps> = ({ game, coords }: HorizontalGapProps) => {
-    let constraint = game.getConstraintWithRight(coords);
-    return (
-        <td className="HorizontalGap">{printConstraint(constraint)}</td>
-    );
-};
+const HorizontalGap: FC<GapProps> = Gap('HorizontalGap',
+    (game, coords) => game.getConstraintWithRight(coords))
 
 export default HorizontalGap;
