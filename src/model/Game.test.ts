@@ -99,6 +99,25 @@ describe('a valid game of size 5', () => {
         expect(cellAfterSecondSet.type).toEqual('user');
     })
 
+    it('can clear user values', () => {
+        const coords = at(3, 4);
+
+        expect(game.getCellValue(coords).type).toEqual('empty');
+
+        const firstValue = 2;
+        let updatedGame = game.withUserValue(coords, firstValue);
+
+        const cellAfterFirstSet = updatedGame.getCellValue(coords);
+        expect(cellAfterFirstSet.value).toEqual(firstValue);
+        expect(cellAfterFirstSet.type).toEqual('user');
+
+        updatedGame = game.withBlank(coords);
+
+        const cellAfterSecondSet = updatedGame.getCellValue(coords);
+        expect(cellAfterSecondSet.value).not.toBeTruthy();
+        expect(cellAfterSecondSet.type).toEqual('empty');
+    })
+
     it('cannot override fixed values with user values', () => {
         const coords = at(1, 3);
 

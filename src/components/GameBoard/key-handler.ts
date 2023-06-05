@@ -7,7 +7,7 @@ type KeyHandler = (e: React.KeyboardEvent,
                    game: Game,
                    activeCell: Coordinates | null,
                    setActiveCell: (c: Coordinates | null) => void,
-                   onUserValue: (c: Coordinates, value: number) => void) => boolean;
+                   onUserValue: (c: Coordinates, value: number | null) => void) => boolean;
 
 const escHandler: KeyHandler = (e, game, activeCell, setActiveCell) => {
     if (e.key !== 'Escape') return false;
@@ -43,16 +43,16 @@ const arrowHandler: KeyHandler = (e, game, activeCell, setActiveCell) => {
     return true;
 }
 
+function cellCanBeEdited(cell: CellValue) {
+    return cell.type !== 'fixed';
+}
+
 const valueHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValue) => {
     const val = parseInt(e.key);
     if (isNaN(val)) return false;
 
     function isValidValue() {
         return val > 0 && val <= game.size;
-    }
-
-    function cellCanBeEdited(cell: CellValue) {
-        return cell.type !== 'fixed';
     }
 
     if (activeCell) {
@@ -65,14 +65,29 @@ const valueHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValu
     return true;
 }
 
-const handlers: KeyHandler[] = [escHandler, arrowHandler, valueHandler];
+const deleteHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValue) => {
+    if (e.key !== 'Delete' && e.key !== 'Backspace') return false;
+
+    if (activeCell) {
+        const cell = game.getCellValue(activeCell);
+        if (cellCanBeEdited(cell)) {
+            onUserValue(activeCell, null);
+        }
+    }
+
+    return true;
+}
+
+const handlers: KeyHandler[] = [escHandler, arrowHandler, valueHandler, deleteHandler];
 
 export const keyHandler = (game: Game,
                            activeCell: Coordinates | null,
                            setActiveCell: (c: Coordinates | null) => void,
-                           onUserValue: (c: Coordinates, value: number) => void): (e: React.KeyboardEvent) => void => e => {
+                           onUserValue: (c: Coordinates, value: number | null) => void): (e: React.KeyboardEvent) => void => e => {
     for (let i = 0; i < handlers.length; i++) {
         if (handlers[i](e, game, activeCell, setActiveCell, onUserValue))
             return;
     }
+
+    console.log('Unhandled ', e.key)
 };

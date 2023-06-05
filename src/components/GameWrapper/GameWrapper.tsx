@@ -12,9 +12,16 @@ interface GameWrapperProps {
 const GameWrapper: FC<GameWrapperProps> = () => {
     const [game, setGame] = useGame();
 
-    const onUserValue = useCallback((coords: Coordinates, value: number) =>
-            game && setGame(game.withUserValue(coords, value)),
-        [game])
+    const onUserValue = useCallback((coords: Coordinates, value: number | null) => {
+            if (game) {
+                if (value)
+                    setGame(game.withUserValue(coords, value));
+                else
+                    setGame(game.withBlank(coords));
+            }
+        },
+        [game]
+    )
 
     return (
         <div className="GameWrapper">

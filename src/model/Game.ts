@@ -1,5 +1,5 @@
 import {at, Coordinates} from "./Coordinates";
-import {Cell, CellValue, ValueCell} from "./Cell";
+import {Cell, CellValue, EmptyCell, ValueCell} from "./Cell";
 import {Constraint, violates} from "./Constraint";
 
 type CellStatus = 'ok' | 'not-unique'
@@ -44,13 +44,25 @@ class Game {
     }
 
     withUserValue(coords: Coordinates, value: number): Game {
+        const newValue = new ValueCell('user', value);
+        return this.transformCellAt(coords,
+            (cell: Cell) => cell.withValue(newValue),
+            'Cannot override fixed value with user value');
+    }
+
+    withBlank(coords: Coordinates): Game {
+        return this.transformCellAt(coords,
+            (cell: Cell) => cell.withValue(EmptyCell.get()),
+            'Cannot clear fixed value');
+    }
+
+    private transformCellAt(coords: Coordinates, cellTransformer: (cell: Cell) => Cell, messageForFixed: string) {
         const index = coords.toIndex(this.size);
         if (this.cells[index].value.type === 'fixed') {
-            throw new Error('Cannot override fixed value with user value')
+            throw new Error(messageForFixed)
         }
 
-        const newValue = new ValueCell('user', value);
-        const updatedCells = this.cells.map((cell, idx) => idx === index ? cell.withValue(newValue) : cell);
+        const updatedCells = this.cells.map((cell, idx) => idx === index ? cellTransformer(cell) : cell);
         return new Game(
             this.size,
             updatedCells);

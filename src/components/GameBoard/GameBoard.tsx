@@ -9,7 +9,7 @@ import {keyHandler} from "./key-handler";
 
 interface GameBoardProps {
     game: Game,
-    onUserValue: (coords: Coordinates, value: number) => void
+    onUserValue: (coords: Coordinates, value: number | null) => void
 }
 
 const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
