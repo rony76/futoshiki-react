@@ -1,6 +1,6 @@
 import {Game, rowColIterate} from "./Game";
 import {at, Coordinates} from "./Coordinates";
-import {Constraint} from "./Cell";
+import {Constraint} from "./Constraint";
 
 
 it('cannot be created with non positive size', () => {
@@ -186,6 +186,70 @@ describe('a valid game of size 5', () => {
             expect(game.getStatus(at(3, 3))).toEqual('ok');
             expect(game.getStatus(at(3, 4))).toEqual('ok');
             expect(game.getStatus(at(3, 5))).toEqual('ok');
+        })
+    })
+
+    describe('validating constraints', () => {
+        it('has valid horizontal status when empty', () => {
+            rowColIterate(size, (row, col) => {
+                if (col < size) {
+                    expect(game.getConstraintStatusWithRight(at(row, col))).toEqual('ok');
+                }
+            })
+        })
+
+        it('has valid vertical status when empty', () => {
+            rowColIterate(size, (row, col) => {
+                if (row < size) {
+                    expect(game.getConstraintStatusWithBelow(at(row, col))).toEqual('ok');
+                }
+            })
+        })
+
+        it('cannot get constraint on the lower border', () => {
+            expect(() => game.getConstraintStatusWithBelow(at(size, 3))).toThrow();
+        })
+
+        it('cannot get constraint on the right border', () => {
+            expect(() => game.getConstraintStatusWithRight(at(3, size))).toThrow();
+        })
+
+        it('has valid horizontal status when constraint is respected', () => {
+            let coords = at(3, 3);
+            game.setConstraintWithRight(coords, 'lt');
+            game = game
+                .withUserValue(coords, 1)
+                .withUserValue(coords.getNextGoing('right', size), 2)
+
+            expect(game.getConstraintStatusWithRight(coords)).toEqual('ok');
+        })
+
+        it('has valid horizontal status when right value is missing', () => {
+            let coords = at(3, 3);
+            game.setConstraintWithRight(coords, 'lt');
+            game = game
+                .withUserValue(coords, 2)
+
+            expect(game.getConstraintStatusWithRight(coords)).toEqual('ok');
+        })
+
+        it('has valid horizontal status when left value is missing', () => {
+            let coords = at(3, 3);
+            game.setConstraintWithRight(coords, 'lt');
+            game = game
+                .withUserValue(coords.getNextGoing('right', size), 2)
+
+            expect(game.getConstraintStatusWithRight(coords)).toEqual('ok');
+        })
+
+        it('complains when horizontal constraint is violated', () => {
+            let coords = at(3, 3);
+            game.setConstraintWithRight(coords, 'lt');
+            game = game
+                .withUserValue(coords, 4)
+                .withUserValue(coords.getNextGoing('right', size), 3)
+
+            expect(game.getConstraintStatusWithRight(coords)).toEqual('violated');
         })
     })
 })

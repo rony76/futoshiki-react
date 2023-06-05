@@ -4,7 +4,8 @@ import {Gap, GapProps} from "../Gap/Gap";
 
 const HorizontalGap: FC<GapProps> = Gap('HorizontalGap',
     {
-        getConstraint: (game, coords) => game.getConstraintWithRight(coords)
+        getConstraint: (g, c) => g.getConstraintWithRight(c),
+        getConstraintStatus: (g, c) => g.getConstraintStatusWithRight(c)
     });
 
 export default HorizontalGap;

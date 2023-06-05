@@ -1,3 +1,7 @@
 .HorizontalGap {
     width: 1em;
 }
+
+.violated-constraint {
+    color: red;
+}

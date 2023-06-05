@@ -1,3 +1,7 @@
 .VerticalGap {
     transform: rotate(90deg);
 }
+
+.violated-constraint {
+    color: red;
+}

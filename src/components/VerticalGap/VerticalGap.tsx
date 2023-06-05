@@ -4,7 +4,8 @@ import {Gap, GapProps} from "../Gap/Gap";
 
 const VerticalGap: FC<GapProps> = Gap('VerticalGap',
     {
-        getConstraint: (game, coords) => game.getConstraintWithBelow(coords)
+        getConstraint: (g, c) => g.getConstraintWithBelow(c),
+        getConstraintStatus: (g, c) => g.getConstraintStatusWithBelow(c)
     });
 
 

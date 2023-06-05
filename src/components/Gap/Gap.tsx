@@ -1,7 +1,7 @@
-import {Game} from "../../model/Game";
+import {ConstraintStatus, Game} from "../../model/Game";
 import {Coordinates} from "../../model/Coordinates";
-import {Constraint} from "../../model/Cell";
 import React, {FC} from "react";
+import {Constraint} from "../../model/Constraint";
 
 interface GapProps {
     game: Game,
@@ -9,7 +9,8 @@ interface GapProps {
 }
 
 interface ConstraintInfoProvider {
-    getConstraint: (game: Game, coords: Coordinates) => Constraint
+    getConstraint: (game: Game, coords: Coordinates) => Constraint,
+    getConstraintStatus: (game: Game, coords: Coordinates) => ConstraintStatus
 }
 
 const printConstraint = (c: Constraint) => {
@@ -27,8 +28,14 @@ const Gap: (className: string,
             infoProvider: ConstraintInfoProvider) => FC<GapProps> =
     (className, infoProvider) => ({game, coords}: GapProps) => {
         const constraint = infoProvider.getConstraint(game, coords);
+        const status = infoProvider.getConstraintStatus(game, coords);
+
+        let cn = className
+        if (status === 'violated') {
+            cn += ' violated-constraint'
+        }
         return (
-            <td className={className}>{printConstraint(constraint)}</td>
+            <td className={cn}>{printConstraint(constraint)}</td>
         );
     };
 

@@ -1,28 +1,6 @@
+import {Constraint, Constraints} from "./Constraint";
+
 type CellValueType = 'fixed' | 'user' | 'empty'
-
-type Constraint = 'none' | 'lt' | 'gt';
-
-class Constraints {
-    readonly right: Constraint;
-    readonly below: Constraint;
-
-    private constructor(right: Constraint, below: Constraint) {
-        this.right = right;
-        this.below = below;
-    }
-
-    static none(): Constraints {
-        return new Constraints('none', 'none');
-    }
-
-    constrainRight(constraint: Constraint): Constraints {
-        return new Constraints(constraint, this.below);
-    }
-
-    constrainBelow(constraint: Constraint): Constraints {
-        return new Constraints(this.right, constraint);
-    }
-}
 
 class Cell {
     readonly constraints: Constraints
@@ -87,5 +65,5 @@ class EmptyCell implements CellValue {
     }
 }
 
-export type {CellValue, CellValueType, Constraint}
-export {ValueCell, EmptyCell, Cell, Constraints}
+export type {CellValue, CellValueType}
+export {ValueCell, EmptyCell, Cell}

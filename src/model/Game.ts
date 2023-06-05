@@ -1,7 +1,9 @@
 import {at, Coordinates} from "./Coordinates";
-import {Cell, CellValue, Constraint, ValueCell} from "./Cell";
+import {Cell, CellValue, ValueCell} from "./Cell";
+import {Constraint, violates} from "./Constraint";
 
 type CellStatus = 'ok' | 'not-unique'
+type ConstraintStatus = 'ok' | 'violated'
 
 const rowColIterate = (size: number, action: (row: number, col: number) => void) => {
     for (let row = 1; row <= size; row++) {
@@ -87,8 +89,34 @@ class Game {
         return this.statuses[index];
     }
 
+    getConstraintStatusWithRight(coords: Coordinates): ConstraintStatus {
+        if (!coords.canMove('right', this.size)) throw new Error('Cannot get constraint status over the second to last column')
+        const constraint = this.getConstraintWithRight(coords);
+        const leftValue = this.getCellValue(coords).value;
+        const rightValue = this.getCellValue(coords.getNextGoing('right', this.size)).value
+
+        if (leftValue && rightValue && violates(constraint, leftValue, rightValue)) {
+            return 'violated';
+        }
+
+        return 'ok';
+    }
+
+    getConstraintStatusWithBelow(coords: Coordinates): ConstraintStatus {
+        if (!coords.canMove('down', this.size)) throw new Error('Cannot get constraint status below second to last row')
+        const constraint = this.getConstraintWithBelow(coords);
+        const upValue = this.getCellValue(coords).value;
+        const downValue = this.getCellValue(coords.getNextGoing('down', this.size)).value
+
+        if (upValue && downValue && violates(constraint, upValue, downValue)) {
+            return 'violated';
+        }
+
+        return 'ok';
+    }
+
     private validate(): Array<CellStatus> {
-        function initBidimensionalCheck(size: number) {
+        function initTwoDimensionalCheck(size: number) {
             const check = Array(size);
             for (let i = 0; i < size; i++) {
                 check[i] = Array(size);
@@ -97,8 +125,8 @@ class Game {
             return check;
         }
 
-        const rowChecks = initBidimensionalCheck(this.size);
-        const colChecks = initBidimensionalCheck(this.size);
+        const rowChecks = initTwoDimensionalCheck(this.size);
+        const colChecks = initTwoDimensionalCheck(this.size);
 
 
         rowColIterate(this.size, (row, col) => {
@@ -133,4 +161,4 @@ class Game {
 }
 
 export {Game, rowColIterate};
-export type {CellStatus};
+export type {CellStatus, ConstraintStatus};
