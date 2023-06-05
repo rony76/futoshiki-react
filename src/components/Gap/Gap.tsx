@@ -8,6 +8,10 @@ interface GapProps {
     coords: Coordinates
 }
 
+interface ConstraintInfoProvider {
+    getConstraint: (game: Game, coords: Coordinates) => Constraint
+}
+
 const printConstraint = (c: Constraint) => {
     switch (c) {
         case 'gt':
@@ -20,9 +24,9 @@ const printConstraint = (c: Constraint) => {
 }
 
 const Gap: (className: string,
-            constraintExtractor: (game: Game, coords: Coordinates) => Constraint) => FC<GapProps> =
-    (className, constraintProvider) => ({game, coords}: GapProps) => {
-        const constraint = constraintProvider(game, coords);
+            infoProvider: ConstraintInfoProvider) => FC<GapProps> =
+    (className, infoProvider) => ({game, coords}: GapProps) => {
+        const constraint = infoProvider.getConstraint(game, coords);
         return (
             <td className={className}>{printConstraint(constraint)}</td>
         );

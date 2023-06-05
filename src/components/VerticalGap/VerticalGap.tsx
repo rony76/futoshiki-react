@@ -3,6 +3,9 @@ import './VerticalGap.css';
 import {Gap, GapProps} from "../Gap/Gap";
 
 const VerticalGap: FC<GapProps> = Gap('VerticalGap',
-    (game, coords) => game.getConstraintWithBelow(coords))
+    {
+        getConstraint: (game, coords) => game.getConstraintWithBelow(coords)
+    });
+
 
 export default VerticalGap;
