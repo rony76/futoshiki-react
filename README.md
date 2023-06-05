@@ -82,5 +82,3 @@ Yet again I started imagining what would be the simplest statement that would al
 
 And then (you guess it), I started iterating on top of it, until I came up with the minimum language that would allow me to 
 describe a board. 
-
-It's been fun.
