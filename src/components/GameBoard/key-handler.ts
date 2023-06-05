@@ -1,7 +1,7 @@
 import {Coordinates, Direction} from "../../model/Coordinates";
 import React from "react";
 import {Game} from "../../model/Game";
-import {Cell} from "../../model/Cell";
+import {CellValue} from "../../model/Cell";
 
 type KeyHandler = (e: React.KeyboardEvent,
                    game: Game,
@@ -47,12 +47,12 @@ const valueHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValu
         return val > 0 && val <= game.size;
     }
 
-    function cellCanBeEdited(cell: Cell) {
+    function cellCanBeEdited(cell: CellValue) {
         return cell.type !== 'fixed';
     }
 
     if (activeCell) {
-        const cell = game.getCell(activeCell);
+        const cell = game.getCellValue(activeCell);
         if (isValidValue() && cellCanBeEdited(cell)) {
             onUserValue(activeCell, val);
         }

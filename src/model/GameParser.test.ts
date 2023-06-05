@@ -12,7 +12,7 @@ it('can parse empty game with size', () => {
 
     for (let row = 1; row < size; row++) {
         for (let col = 1; col < size; col++) {
-            let cell = game.getCell(at(row, col));
+            let cell = game.getCellValue(at(row, col));
             expect(cell).toBeTruthy();
             expect(cell.type).toEqual('empty');
         }
@@ -27,8 +27,8 @@ it('can parse game with two fixed values', () => {
         [3, 4]: 5
     `);
 
-    expect(game.getCell(at(2, 1)).value).toEqual(4);
-    expect(game.getCell(at(3, 4)).value).toEqual(5);
+    expect(game.getCellValue(at(2, 1)).value).toEqual(4);
+    expect(game.getCellValue(at(3, 4)).value).toEqual(5);
 
 });
 
@@ -55,8 +55,8 @@ it('can parse game with values and constraints', () => {
         [3, 4] less than below 
     `);
 
-    expect(game.getCell(at(1, 5)).value).toEqual(5);
-    expect(game.getCell(at(4, 5)).value).toEqual(4);
+    expect(game.getCellValue(at(1, 5)).value).toEqual(5);
+    expect(game.getCellValue(at(4, 5)).value).toEqual(4);
     expect(game.getConstraintWithRight(at(1, 1))).toEqual('none');
     expect(game.getConstraintWithRight(at(2, 1))).toEqual('gt');
     expect(game.getConstraintWithBelow(at(3, 4))).toEqual('lt');

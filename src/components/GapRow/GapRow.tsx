@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
 import './GapRow.css';
-import {Constraint, Game} from "../../model/Game";
+import {Game} from "../../model/Game";
 import {at} from "../../model/Coordinates";
+import {Constraint} from "../../model/Cell";
 
 interface GapRowProps {
     game: Game,

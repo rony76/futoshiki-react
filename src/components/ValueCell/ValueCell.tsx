@@ -12,7 +12,7 @@ interface ValueCellProps {
 const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
     const [activeCell, setActiveCell] = useContext(ActiveCellContext);
 
-    const cell = game.getCell(coords);
+    const cell = game.getCellValue(coords);
     const cellIsActive = coords.isSameAs(activeCell);
     const cellIsSibling = !cellIsActive && coords.isSiblingOf(activeCell);
 

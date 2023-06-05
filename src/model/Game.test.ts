@@ -1,5 +1,6 @@
-import {Constraint, Game} from "./Game";
+import {Game} from "./Game";
 import {at, Coordinates} from "./Coordinates";
+import {Constraint} from "./Cell";
 
 
 it('cannot be created with non positive size', () => {
@@ -23,7 +24,7 @@ describe('a valid game of size 5', () => {
     it('allows to retrieve all cells, 1 based', () => {
         for (let row = 1; row <= size; row++) {
             for (let column = 1; column <= size; column++) {
-                let cell = game.getCell(at(row, column));
+                let cell = game.getCellValue(at(row, column));
                 expect(cell).not.toBeNull();
             }
         }
@@ -35,7 +36,7 @@ describe('a valid game of size 5', () => {
     ];
     it.each(badCoords)('complains for bad cell coordinates when too %s', (where: string, coords: Coordinates) => {
         expect(() => {
-            game.getCell(coords);
+            game.getCellValue(coords);
         }).toThrow();
     })
 
@@ -48,7 +49,7 @@ describe('a valid game of size 5', () => {
     it.each(cellCoords)('has cell <%d, %d> defaulting to empty', (r, c) => {
         const coords = at(r, c);
 
-        const cellBefore = game.getCell(coords);
+        const cellBefore = game.getCellValue(coords);
         expect(cellBefore.value).not.toBeTruthy();
         expect(cellBefore.type).toEqual('empty');
     })
@@ -56,14 +57,14 @@ describe('a valid game of size 5', () => {
     it('can assign fixed values', () => {
         const coords = at(4, 2);
 
-        const cellBefore = game.getCell(coords);
+        const cellBefore = game.getCellValue(coords);
         expect(cellBefore.value).not.toBeTruthy();
         expect(cellBefore.type).toEqual('empty');
 
         const fixedValue = 2;
         game.setFixedValue(coords, fixedValue);
 
-        const cellAfter = game.getCell(coords);
+        const cellAfter = game.getCellValue(coords);
         expect(cellAfter.value).toEqual(fixedValue);
         expect(cellAfter.type).toEqual('fixed');
     })
@@ -71,12 +72,12 @@ describe('a valid game of size 5', () => {
     it('can assign user values to empty cells', () => {
         const coords = at(5, 3);
 
-        expect(game.getCell(coords).type).toEqual('empty');
+        expect(game.getCellValue(coords).type).toEqual('empty');
 
         const fixedValue = 2;
         let updatedGame = game.withUserValue(coords, fixedValue);
 
-        const cellAfter = updatedGame.getCell(coords);
+        const cellAfter = updatedGame.getCellValue(coords);
         expect(cellAfter.value).toEqual(fixedValue);
         expect(cellAfter.type).toEqual('user');
     })
@@ -84,19 +85,19 @@ describe('a valid game of size 5', () => {
     it('can override user values', () => {
         const coords = at(1, 3);
 
-        expect(game.getCell(coords).type).toEqual('empty');
+        expect(game.getCellValue(coords).type).toEqual('empty');
 
         const firstValue = 5;
         let updatedGame = game.withUserValue(coords, firstValue);
 
-        const cellAfterFirstSet = updatedGame.getCell(coords);
+        const cellAfterFirstSet = updatedGame.getCellValue(coords);
         expect(cellAfterFirstSet.value).toEqual(firstValue);
         expect(cellAfterFirstSet.type).toEqual('user');
 
         const secondValue = 3;
         updatedGame = game.withUserValue(coords, secondValue);
 
-        const cellAfterSecondSet = updatedGame.getCell(coords);
+        const cellAfterSecondSet = updatedGame.getCellValue(coords);
         expect(cellAfterSecondSet.value).toEqual(secondValue);
         expect(cellAfterSecondSet.type).toEqual('user');
     })
@@ -104,12 +105,12 @@ describe('a valid game of size 5', () => {
     it('cannot override fixed values with user values', () => {
         const coords = at(1, 3);
 
-        expect(game.getCell(coords).type).toEqual('empty');
+        expect(game.getCellValue(coords).type).toEqual('empty');
 
         const firstValue = 5;
         game.setFixedValue(coords, firstValue);
 
-        const cellAfterFirstSet = game.getCell(coords);
+        const cellAfterFirstSet = game.getCellValue(coords);
         expect(cellAfterFirstSet.value).toEqual(firstValue);
         expect(cellAfterFirstSet.type).toEqual('fixed');
 

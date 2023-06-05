@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
 import './ValueRow.css';
-import {Constraint, Game} from "../../model/Game";
+import {Game} from "../../model/Game";
 import ValueCell from "../ValueCell/ValueCell";
 import {at} from "../../model/Coordinates";
+import {Constraint} from "../../model/Cell";
 
 interface ValueRowProps {
     game: Game,
