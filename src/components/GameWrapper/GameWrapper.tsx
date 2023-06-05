@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import './GameWrapper.css';
 import GameBoard from "../GameBoard/GameBoard";
 import {useGame} from "../../hooks/useGame";
@@ -12,7 +12,9 @@ interface GameWrapperProps {
 const GameWrapper: FC<GameWrapperProps> = () => {
     const [game, setGame] = useGame();
 
-    const onUserValue = (coords: Coordinates, value: number) => game && setGame(game.withUserValue(coords, value))
+    const onUserValue = useCallback((coords: Coordinates, value: number) =>
+            game && setGame(game.withUserValue(coords, value)),
+        [game])
 
     return (
         <div className="GameWrapper">
