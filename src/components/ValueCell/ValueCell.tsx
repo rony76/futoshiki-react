@@ -28,6 +28,8 @@ const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
     if (cellIsSibling) className += ' sibling-cell'
     if (cell.type === 'user') className += ' user-value'
     if (cell.type === 'fixed') className += ' fixed-value'
+    if (game.getStatus(coords) === "not-unique") className += ' non-unique-value';
+
     return (
         <td className={className} onClick={onClick}>
             {cell.value}

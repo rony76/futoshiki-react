@@ -26,3 +26,9 @@
 .sibling-cell {
     background: #acee88;
 }
+
+.non-unique-value {
+    border-color: red;
+    color: red;
+    background: #e89494;
+}
