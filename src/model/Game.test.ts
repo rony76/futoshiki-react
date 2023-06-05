@@ -22,12 +22,9 @@ describe('a valid game of size 5', () => {
     })
 
     it('allows to retrieve all cells, 1 based', () => {
-        for (let row = 1; row <= size; row++) {
-            for (let column = 1; column <= size; column++) {
-                let cell = game.getCellValue(at(row, column));
-                expect(cell).not.toBeNull();
-            }
-        }
+        rowColIterate(size, (row, col) => {
+            expect(game.getCellValue(at(row, col))).not.toBeNull();
+        })
     })
 
     const badCoords: [string, Coordinates][] = [

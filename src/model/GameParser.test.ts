@@ -1,5 +1,6 @@
 import {parseGame} from "./GameParser";
 import {at} from "./Coordinates";
+import {rowColIterate} from "./Game";
 
 it('can parse empty game with size', () => {
     const size = 5;
@@ -10,13 +11,11 @@ it('can parse empty game with size', () => {
     expect(game).toBeTruthy();
     expect(game.size).toEqual(size);
 
-    for (let row = 1; row < size; row++) {
-        for (let col = 1; col < size; col++) {
-            let cell = game.getCellValue(at(row, col));
-            expect(cell).toBeTruthy();
-            expect(cell.type).toEqual('empty');
-        }
-    }
+    rowColIterate(size, (row, col) => {
+        let cell = game.getCellValue(at(row, col));
+        expect(cell).toBeTruthy();
+        expect(cell.type).toEqual('empty');
+    })
 });
 
 it('can parse game with two fixed values', () => {
