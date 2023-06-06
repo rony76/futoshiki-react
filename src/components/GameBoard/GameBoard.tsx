@@ -1,11 +1,10 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import './GameBoard.css';
-import ValueRow from "../ValueRow/ValueRow";
-import GapRow from "../GapRow/GapRow";
 import {Game} from "../../model/Game";
 import {Coordinates} from "../../model/Coordinates";
 import {ActiveCellContext} from '../../ActiveCellContext';
 import {keyHandler} from "./KeyHandler";
+import GameTable from "../GameTable/GameTable";
 
 interface GameBoardProps {
     game: Game,
@@ -22,25 +21,15 @@ const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
 
     const [activeCell, setActiveCell] = useState<Coordinates | null>(null);
 
-    let cells = Array<JSX.Element>();
-
     const onKeyDown = keyHandler(game, activeCell, setActiveCell, onUserValue);
 
-    for (let row = 1; row <= game.size; row++) {
-        cells = cells.concat(<ValueRow game={game} row={row} key={"val" + row}/>)
-        if (row < game.size) {
-            cells = cells.concat(<GapRow game={game} afterRow={row} key={"gap" + row}/>)
-        }
-    }
-
     return (
-        <table className="GameBoard" tabIndex={0} onKeyDown={onKeyDown} ref={tableRef}>
-            <tbody>
+        // wrap this in a div so that we can set the tabIndex
+        <div className="GameBoard" onKeyDown={onKeyDown} tabIndex={0} ref={tableRef}>
             <ActiveCellContext.Provider value={[activeCell, setActiveCell]}>
-                {cells}
+                <GameTable game={game} />
             </ActiveCellContext.Provider>
-            </tbody>
-        </table>
+        </div>
     );
 };
 
