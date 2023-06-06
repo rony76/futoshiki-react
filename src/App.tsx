@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import GameWrapper from "./components/GameWrapper/GameWrapper";
+import GameLoader from "./components/GameLoader/GameLoader";
 
 function App() {
     return (
@@ -9,7 +9,7 @@ function App() {
                 <h2>FUTOSHIKI</h2>
             </header>
             <main>
-                <GameWrapper />
+                <GameLoader />
             </main>
         </div>
     );

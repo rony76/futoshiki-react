@@ -1,33 +1,20 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import './GameWrapper.css';
 import GameBoard from "../GameBoard/GameBoard";
-import {useGame} from "../../hooks/useGame";
-import Loading from "../Loading/Loading";
 import Instructions from "../Instructions/Instructions";
 import {Coordinates} from "../../model/Coordinates";
+import {Game} from "../../model/Game";
 
 interface GameWrapperProps {
+    game: Game,
+    onUserValue: (coords: Coordinates, value: number | null) => void
 }
 
-const GameWrapper: FC<GameWrapperProps> = () => {
-    const [game, setGame] = useGame();
-
-    const onUserValue = useCallback((coords: Coordinates, value: number | null) => {
-            if (game) {
-                if (value)
-                    setGame(game.withUserValue(coords, value));
-                else
-                    setGame(game.withBlank(coords));
-            }
-        },
-        [game]
-    )
-
+const GameWrapper: FC<GameWrapperProps> = ({game, onUserValue}: GameWrapperProps) => {
     return (
         <div className="GameWrapper">
-            {game && <GameBoard game={game} onUserValue={onUserValue}/>}
-            {!game && <Loading/>}
-            {game && <Instructions size={game.size}/>}
+            <GameBoard game={game} onUserValue={onUserValue}/>
+            <Instructions size={game.size}/>
         </div>
     );
 };
