@@ -24,7 +24,6 @@ const GameBoard: FC<GameBoardProps> = ({game, onUserValue}: GameBoardProps) => {
     const onKeyDown = keyHandler(game, activeCell, setActiveCell, onUserValue);
 
     return (
-        // wrap this in a div so that we can set the tabIndex
         <div className="GameBoard" onKeyDown={onKeyDown} tabIndex={0} ref={tableRef}>
             <ActiveCellContext.Provider value={[activeCell, setActiveCell]}>
                 <GameTable game={game} />
