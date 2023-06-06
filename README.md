@@ -1,5 +1,7 @@
 # Futoshiki
 
+![](images/game.png "game board")
+
 ## What is this repo? 
 
 This is a toy project which I created to
