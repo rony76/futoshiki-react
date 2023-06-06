@@ -66,7 +66,7 @@ const valueHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValu
 }
 
 const deleteHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValue) => {
-    if (e.key !== 'Delete' && e.key !== 'Backspace') return false;
+    if (e.key !== 'Delete' && e.key !== 'Backspace' && e.key !== ' ') return false;
 
     if (activeCell) {
         const cell = game.getCellValue(activeCell);

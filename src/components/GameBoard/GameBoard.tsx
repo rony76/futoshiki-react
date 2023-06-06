@@ -5,7 +5,7 @@ import GapRow from "../GapRow/GapRow";
 import {Game} from "../../model/Game";
 import {Coordinates} from "../../model/Coordinates";
 import {ActiveCellContext} from '../../ActiveCellContext';
-import {keyHandler} from "./key-handler";
+import {keyHandler} from "./KeyHandler";
 
 interface GameBoardProps {
     game: Game,
