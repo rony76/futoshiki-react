@@ -2,7 +2,7 @@ import React, {FC, useContext} from 'react';
 import './ValueCell.css';
 import {Coordinates} from "../../model/Coordinates";
 import {Game} from "../../model/Game";
-import {ActiveCellContext} from "../../ActiveCellContext";
+import {ActiveCoordsContext} from "../../ActiveCoordsContext";
 
 interface ValueCellProps {
     game: Game,
@@ -10,17 +10,17 @@ interface ValueCellProps {
 }
 
 const ValueCell: FC<ValueCellProps> = ({game, coords}: ValueCellProps) => {
-    const [activeCell, setActiveCell] = useContext(ActiveCellContext);
+    const [activeCoords, setActiveCoords] = useContext(ActiveCoordsContext);
 
     const cell = game.getCellValue(coords);
-    const cellIsActive = coords.isSameAs(activeCell);
-    const cellIsSibling = !cellIsActive && coords.isSiblingOf(activeCell);
+    const cellIsActive = coords.isSameAs(activeCoords);
+    const cellIsSibling = !cellIsActive && coords.isSiblingOf(activeCoords);
 
     const onClick = () => {
         if (cell.type === 'fixed') {
             return;
         }
-        setActiveCell(coords);
+        setActiveCoords(coords);
     };
 
     let className = 'ValueCell';

@@ -5,17 +5,17 @@ import {CellValue} from "../../model/Cell";
 
 type KeyHandler = (e: React.KeyboardEvent,
                    game: Game,
-                   activeCell: Coordinates | null,
-                   setActiveCell: (c: Coordinates | null) => void,
+                   activeCoords: Coordinates | null,
+                   setActiveCoords: (c: Coordinates | null) => void,
                    onUserValue: (c: Coordinates, value: number | null) => void) => boolean;
 
-const escHandler: KeyHandler = (e, game, activeCell, setActiveCell) => {
+const escHandler: KeyHandler = (e, game, activeCoords, setActiveCoords) => {
     if (e.key !== 'Escape') return false;
-    setActiveCell(null);
+    setActiveCoords(null);
     return true;
 }
 
-const arrowHandler: KeyHandler = (e, game, activeCell, setActiveCell) => {
+const arrowHandler: KeyHandler = (e, game, activeCoords, setActiveCoords) => {
     const getArrowKeyDirection = (key: string): Direction | null => {
         switch (key) {
             case 'ArrowLeft':
@@ -33,12 +33,12 @@ const arrowHandler: KeyHandler = (e, game, activeCell, setActiveCell) => {
 
     const dir: Direction | null = getArrowKeyDirection(e.key);
     if (!dir) return false;
-    if (activeCell) {
-        if (activeCell.canMove(dir, game.size)) {
-            setActiveCell(activeCell.getNextGoing(dir, game.size))
+    if (activeCoords) {
+        if (activeCoords.canMove(dir, game.size)) {
+            setActiveCoords(activeCoords.getNextGoing(dir, game.size))
         }
     } else {
-        setActiveCell(at(1, 1))
+        setActiveCoords(at(1, 1))
     }
     return true;
 }
@@ -47,7 +47,7 @@ function cellCanBeEdited(cell: CellValue) {
     return cell.type !== 'fixed';
 }
 
-const valueHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValue) => {
+const valueHandler: KeyHandler = (e, game, activeCoords, setActiveCoords, onUserValue) => {
     const val = parseInt(e.key);
     if (isNaN(val)) return false;
 
@@ -55,23 +55,23 @@ const valueHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValu
         return val > 0 && val <= game.size;
     }
 
-    if (activeCell) {
-        const cell = game.getCellValue(activeCell);
+    if (activeCoords) {
+        const cell = game.getCellValue(activeCoords);
         if (isValidValue() && cellCanBeEdited(cell)) {
-            onUserValue(activeCell, val);
+            onUserValue(activeCoords, val);
         }
     }
 
     return true;
 }
 
-const deleteHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserValue) => {
+const deleteHandler: KeyHandler = (e, game, activeCoords, setActiveCoords, onUserValue) => {
     if (e.key !== 'Delete' && e.key !== 'Backspace' && e.key !== ' ') return false;
 
-    if (activeCell) {
-        const cell = game.getCellValue(activeCell);
+    if (activeCoords) {
+        const cell = game.getCellValue(activeCoords);
         if (cellCanBeEdited(cell)) {
-            onUserValue(activeCell, null);
+            onUserValue(activeCoords, null);
         }
     }
 
@@ -81,11 +81,11 @@ const deleteHandler: KeyHandler = (e, game, activeCell, setActiveCell, onUserVal
 const handlers: KeyHandler[] = [escHandler, arrowHandler, valueHandler, deleteHandler];
 
 export const keyHandler = (game: Game,
-                           activeCell: Coordinates | null,
-                           setActiveCell: (c: Coordinates | null) => void,
+                           activeCoords: Coordinates | null,
+                           setActiveCoords: (c: Coordinates | null) => void,
                            onUserValue: (c: Coordinates, value: number | null) => void): (e: React.KeyboardEvent) => void => e => {
     for (let i = 0; i < handlers.length; i++) {
-        if (handlers[i](e, game, activeCell, setActiveCell, onUserValue))
+        if (handlers[i](e, game, activeCoords, setActiveCoords, onUserValue))
             return;
     }
 
